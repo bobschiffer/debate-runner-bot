@@ -1,6 +1,7 @@
 // Initial config
 const Discord = require("discord.js");
 const prefix = "-";
+const token = "NzEzMzQwMjc4MDUxOTYyOTEw.XtDYNw.hlNu36Sd8fQW_b14tztFbSD3HXY";
 const client = new Discord.Client();
 const runner = "runner1";
 
@@ -90,4 +91,25 @@ client.on("message", async message => {
   }
 });
 
-client.login(token);
+/** TO-DO: TIMER */
+// Converts minutes and seconds into milliseconds
+function toMilli(min, sec) {
+  let milli = 0;
+
+  milli += min * 60000;
+  milli += sec * 1000;
+
+  return milli;
+}
+
+// Sets the timer
+function timer(msg, duration) {
+  bot.reply(msg, "Timer has been set for " + fromMilli(duration));
+  log(msg, "Timer has been set for " + fromMilli(duration));
+
+  setTimeout(function() {
+    bot.reply(msg, "Timer has finished!");
+  }, duration);
+}
+
+client.login(process.env.BOT_TOKEN);
