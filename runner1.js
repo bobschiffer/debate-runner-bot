@@ -1,6 +1,7 @@
 // Initial config
 const Discord = require("discord.js");
-const { prefix, token } = require("./config.json");
+const prefix = "-";
+const token = "NzEzMzQwMjc4MDUxOTYyOTEw.XtDYNw.hlNu36Sd8fQW_b14tztFbSD3HXY";
 const client = new Discord.Client();
 
 // States
@@ -73,11 +74,11 @@ client.on("message", async message => {
         message.channel.send("Motion is empty!");
       }
     }
-  } 
-  else if (!voiceChannel) {
-    message.channel.send(`This bot isn't in a voice channel! Type \`-${runner}\` to invite it in the voice channel you're in.`);
-  }
-  else if (message.member.voice.channel.name !== voiceChannel) {
+  } else if (!voiceChannel) {
+    message.channel.send(
+      `This bot isn't in a voice channel! Type \`-${runner}\` to invite it in the voice channel you're in.`
+    );
+  } else if (message.member.voice.channel.name !== voiceChannel) {
     console.log(
       `Someone entered a command that ${runner} has. It's possible that it was meant for another runner. This is just a console log.`
     );
