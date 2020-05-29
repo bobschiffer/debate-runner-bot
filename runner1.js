@@ -4,8 +4,9 @@ const { prefix, token } = require("./config.json");
 const client = new Discord.Client();
 
 // States
+const runner = "runner1";
 let connection;
-let voiceChannel = message.member.voice.channel.name;
+let voiceChannel;
 let inVoice = false;
 let motionBox;
 
@@ -19,7 +20,7 @@ client.on("message", async message => {
   const args = message.content.slice(prefix.length).split(/ +/);
   const command = args.shift().toLowerCase();
 
-  if (command === "runner1") {
+  if (command === runner) {
     /* Voice */
     if (message.member.voice.channel && !inVoice) {
       inVoice = true;
@@ -30,35 +31,23 @@ client.on("message", async message => {
     } else {
       message.reply("You need to join a voice channel first!");
     }
-  } else if (message.member.voice.channel === voiceChannel) {
+  } else if (message.member.voice.channel.name === voiceChannel) {
     if (command === "hear") {
       if (connection && inVoice) {
         const dispatcher = connection.play("./hear.mp3");
         message.channel.send(
           `**@${message.author.username} says:** *HEAR, HEAR!*`
         );
-      } else {
-        message.channel.send(
-          "This bot isn't in a voice channel! Type `-runner1` to invite it in the voice channel you're in."
-        );
       }
     } else if (command === "shame") {
       if (connection && inVoice) {
         const dispatcher = connection.play("./shame.mp3");
         message.channel.send(`**@${message.author.username} says:** *SHAME!*`);
-      } else {
-        message.channel.send(
-          "This bot isn't in a voice channel! Type `-runner1` to invite it in the voice channel you're in."
-        );
       }
     } else if (command === "point" || command === "poi") {
       if (connection && inVoice) {
         const dispatcher = connection.play("./point.mp3");
         message.channel.send(`POI from @${message.author.username}!`);
-      } else {
-        message.channel.send(
-          "This bot isn't in a voice channel! Type and enter `-runner1` to invite it in the voice channel you're in."
-        );
       }
     } else if (command === "leave") {
       message.channel.send("Runner 1 has disconnected.");
@@ -84,6 +73,14 @@ client.on("message", async message => {
         message.channel.send("Motion is empty!");
       }
     }
+  } 
+  else if (!voiceChannel) {
+    message.channel.send(`This bot isn't in a voice channel! Type \`-${runner}\` to invite it in the voice channel you're in.`);
+  }
+  else if (message.member.voice.channel.name !== voiceChannel) {
+    console.log(
+      `Someone entered a command that ${runner} has. It's possible that it was meant for another runner. This is just a console log.`
+    );
   }
 });
 
