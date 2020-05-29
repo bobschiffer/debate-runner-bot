@@ -1,7 +1,6 @@
 // Initial config
 const Discord = require("discord.js");
 const prefix = "-";
-const token = "NzEzMzQwMjc4MDUxOTYyOTEw.XtDYNw.hlNu36Sd8fQW_b14tztFbSD3HXY";
 const client = new Discord.Client();
 const runner = "runner1";
 
@@ -91,4 +90,4 @@ client.on("message", async message => {
   }
 });
 
-client.login(process.env.BOT_TOKEN);
+client.login(token);
