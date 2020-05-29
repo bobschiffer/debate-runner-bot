@@ -4,7 +4,7 @@ const { prefix, token } = require("./config.json");
 const client = new Discord.Client();
 
 // States
-const runner = "runner1";
+const runner = "runner3";
 let connection;
 let voiceChannel;
 let inVoice = false;
