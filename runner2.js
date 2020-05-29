@@ -3,9 +3,9 @@ const Discord = require("discord.js");
 const prefix = "-";
 const token = "NzE0Mzg5MjA4MDE3NTM1MDAw.XtDXuQ.F5691nPdU8DypdTzVcwCfFjUin4";
 const client = new Discord.Client();
+const runner = "runner2";
 
 // States
-const runner = "runner2";
 let connection;
 let voiceChannel;
 let inVoice = false;

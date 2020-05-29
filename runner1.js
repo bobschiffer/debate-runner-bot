@@ -3,9 +3,9 @@ const Discord = require("discord.js");
 const prefix = "-";
 const token = "NzEzMzQwMjc4MDUxOTYyOTEw.XtDYNw.hlNu36Sd8fQW_b14tztFbSD3HXY";
 const client = new Discord.Client();
+const runner = "runner1";
 
 // States
-const runner = "runner1";
 let connection;
 let voiceChannel;
 let inVoice = false;
@@ -48,7 +48,13 @@ client.on("message", async message => {
     } else if (command === "point" || command === "poi") {
       if (connection && inVoice) {
         const dispatcher = connection.play("./point.mp3");
-        message.channel.send(`POI from @${message.author.username}!`);
+        message.channel.send(
+          `POI from @${
+            args.length === 0
+              ? message.author.username
+              : message.author.username + " of " + args.join(" ")
+          }!`
+        );
       }
     } else if (command === "leave") {
       message.channel.send("Runner 1 has disconnected.");
