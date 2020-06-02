@@ -77,7 +77,7 @@ client.on("message", async message => {
   } else if (command === "prep") {
     /**TIMER */
     message.channel.send("Round starts in 15 minutes!");
-    timer(5, 0, message.channel, "@everyone: Prep time's over!");
+    timer(15, 0, message.channel, 0, "@everyone: Prep time's over!");
   } else if (command === "set-motion") {
     /* Motion */
     const motion = args.join(" ");
