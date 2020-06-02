@@ -54,25 +54,6 @@ client.on("message", async message => {
       message.channel.send("Runner 1 has disconnected.");
       connection.disconnect();
       inVoice = false;
-    } else if (command === "set-motion") {
-      /* Motion */
-      const motion = args.join(" ");
-      const infoslide = motion.split("|")[1];
-      motionBox = new Discord.MessageEmbed()
-        .setColor("#0099ff")
-        .setDescription(
-          `**Motion**: ${
-            infoslide ? motion.split("|")[0] : motion
-          }\n\n**Infoslide:** ${infoslide ? infoslide : "None"}`
-        )
-        .setTimestamp();
-      message.channel.send(motionBox);
-    } else if (command === "motion") {
-      if (motionBox) {
-        message.channel.send(motionBox);
-      } else {
-        message.channel.send("Motion is empty!");
-      }
     }
   } else if (!voiceChannel) {
     message.channel.send(

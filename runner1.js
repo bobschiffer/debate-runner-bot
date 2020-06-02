@@ -32,7 +32,10 @@ client.on("message", async message => {
     } else {
       message.reply("You need to join a voice channel first!");
     }
-  } else if (message.member.voice.channel.name === voiceChannel) {
+  } else if (
+    message.member.voice.channel &&
+    message.member.voice.channel.name === voiceChannel
+  ) {
     if (command === "hear") {
       if (connection && inVoice) {
         const dispatcher = connection.play("./hear.mp3");
@@ -56,29 +59,40 @@ client.on("message", async message => {
           }!`
         );
       }
+    } else if (command === "speech") {
+      message.channel.send(`Speech has started.`);
+      timer(1, 0, message.channel, "*1 minute!*");
+      timer(5, 0, message.channel, "*5 minutes!*");
+      timer(6, 0, message.channel, "*6 minutes!*");
+      timer(7, 0, message.channel, "*7 minutes!*");
     } else if (command === "leave") {
-      message.channel.send("Runner 1 has disconnected.");
+      /**LEAVE */
+      message.channel.send(Runner + " has disconnected.");
       connection.disconnect();
       inVoice = false;
-    } else if (command === "set-motion") {
-      /* Motion */
-      const motion = args.join(" ");
-      const infoslide = motion.split("|")[1];
-      motionBox = new Discord.MessageEmbed()
-        .setColor("#0099ff")
-        .setDescription(
-          `**Motion**: ${
-            infoslide ? motion.split("|")[0] : motion
-          }\n\n**Infoslide:** ${infoslide ? infoslide : "None"}`
-        )
-        .setTimestamp();
+    }
+  } else if (command === "prep") {
+    /**TIMER */
+    message.channel.send("Round starts in 15 minutes!");
+    timer(15, 0, message.channel, "@everyone: Prep time's over!");
+  } else if (command === "set-motion") {
+    /* Motion */
+    const motion = args.join(" ");
+    const infoslide = motion.split("|")[1];
+    motionBox = new Discord.MessageEmbed()
+      .setColor("#0099ff")
+      .setDescription(
+        `**Motion**: ${
+          infoslide ? motion.split("|")[0] : motion
+        }\n\n**Infoslide:** ${infoslide ? infoslide : "None"}`
+      )
+      .setTimestamp();
+    message.channel.send(motionBox);
+  } else if (command === "motion") {
+    if (motionBox) {
       message.channel.send(motionBox);
-    } else if (command === "motion") {
-      if (motionBox) {
-        message.channel.send(motionBox);
-      } else {
-        message.channel.send("Motion is empty!");
-      }
+    } else {
+      message.channel.send("Motion is empty!");
     }
   } else if (!voiceChannel) {
     message.channel.send(
@@ -93,23 +107,19 @@ client.on("message", async message => {
 
 /** TO-DO: TIMER */
 // Converts minutes and seconds into milliseconds
-function toMilli(min, sec) {
+const toMilli = (min, sec) => {
   let milli = 0;
-
   milli += min * 60000;
   milli += sec * 1000;
-
   return milli;
-}
+};
 
-// Sets the timer
-function timer(msg, duration) {
-  bot.reply(msg, "Timer has been set for " + fromMilli(duration));
-  log(msg, "Timer has been set for " + fromMilli(duration));
+const timer = (m, s, channel, message) => {
+  let time = toMilli(m, s);
+  setTimeout(() => {
+    channel.send(message);
+    const dispatcher = connection.play("./bell.mp3");
+  }, time);
+};
 
-  setTimeout(function() {
-    bot.reply(msg, "Timer has finished!");
-  }, duration);
-}
-
-client.login(process.env.BOT_TOKEN);
+client.login(token);
