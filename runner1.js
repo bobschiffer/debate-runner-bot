@@ -60,11 +60,15 @@ client.on("message", async message => {
         );
       }
     } else if (command === "speech") {
-      message.channel.send(`Speech has started.`);
-      timer(1, 0, message.channel, "*1 minute!*");
-      timer(5, 0, message.channel, "*5 minutes!*");
-      timer(6, 0, message.channel, "*6 minutes!*");
-      timer(7, 0, message.channel, "*7 minutes!*");
+      message.channel.send(
+        `${
+          args.length > 0 ? args.join(" ") + " speech" : "Next speech"
+        } has started.`
+      );
+      timer(1, 0, message.channel, 1, "*1 minute!*");
+      timer(5, 0, message.channel, 0, "*5 minutes!*");
+      timer(6, 0, message.channel, 1, "*6 minutes!*");
+      timer(7, 0, message.channel, 2, "*7 minutes! Time!*");
     } else if (command === "leave") {
       /**LEAVE */
       message.channel.send(Runner + " has disconnected.");
@@ -74,10 +78,11 @@ client.on("message", async message => {
   } else if (command === "prep") {
     /**TIMER */
     message.channel.send("Round starts in 15 minutes!");
-    timer(15, 0, message.channel, "@everyone: Prep time's over!");
+    timer(5, 0, message.channel, "@everyone: Prep time's over!");
   } else if (command === "set-motion") {
     /* Motion */
     const motion = args.join(" ");
+    console.log("Someone set the motion to", motion);
     const infoslide = motion.split("|")[1];
     motionBox = new Discord.MessageEmbed()
       .setColor("#0099ff")
@@ -114,11 +119,13 @@ const toMilli = (min, sec) => {
   return milli;
 };
 
-const timer = (m, s, channel, message) => {
+const timer = (m, s, channel, numBells, message) => {
   let time = toMilli(m, s);
   setTimeout(() => {
     channel.send(message);
-    const dispatcher = connection.play("./bell.mp3");
+    if (connection) {
+      for (let i = 0; i < numBells; i++) connection.play("./bell.mp3");
+    }
   }, time);
 };
 
