@@ -1,1 +1,1 @@
-worker: node runner2.js
+worker: node runner1.js
