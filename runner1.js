@@ -9,6 +9,7 @@ let connection;
 let voiceChannel;
 let inVoice = false;
 let motionBox;
+let isTiming = false;
 
 client.once("ready", () => {
   console.log("Ready!");
@@ -58,26 +59,33 @@ client.on("message", async message => {
           }!`
         );
       }
-    } else if (command === "speech") {
+    } else if (command === "speech" && !isTiming) {
+      isTiming = true;
       message.channel.send(
         `${
           args.length > 0 ? args.join(" ") + " speech" : "Next speech"
         } has started.`
       );
       timer(1, 0, message.channel, 1, "*1 minute!*");
-      timer(5, 0, message.channel, 0, "*5 minutes!*");
+      for (let i = 2; i <= 5; i++)
+        timer(i, 0, message.channel, 0, `*${i} minutes!*`);
       timer(6, 0, message.channel, 1, "*6 minutes!*");
-      timer(7, 0, message.channel, 2, "*7 minutes! Time!*");
+      timer(7, 0, message.channel, 2, "*7 minutes! Time!*").then(
+        () => (isTiming = false)
+      );
     } else if (command === "leave") {
       /**LEAVE */
       message.channel.send(Runner + " has disconnected.");
       connection.disconnect();
       inVoice = false;
     }
-  } else if (command === "prep") {
+  } else if (command === "prep" && !isTiming) {
     /**TIMER */
+    isTiming = true;
     message.channel.send("Round starts in 15 minutes!");
-    timer(15, 0, message.channel, 0, "@everyone: Prep time's over!");
+    timer(15, 0, message.channel, 0, "@everyone: Prep time's over!").then(
+      () => (isTiming = false)
+    );
   } else if (command === "set-motion") {
     /* Motion */
     const motion = args.join(" ");
@@ -126,6 +134,7 @@ const timer = (m, s, channel, numBells, message) => {
       for (let i = 0; i < numBells; i++) connection.play("./bell.mp3");
     }
   }, time);
+  return new Promise(resolve => setTimeout(resolve, time));
 };
 
 client.login(process.env.BOT_TOKEN);
