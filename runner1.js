@@ -45,7 +45,7 @@ client.on("message", async message => {
         return;
       }
       if (connection && inVoice) {
-        const dispatcher = connection.play("./hear.mp3");
+        connection.play("./hear.mp3");
         message.channel.send(
           `**@${message.author.username} says:** *HEAR, HEAR!*`
         );
@@ -58,7 +58,7 @@ client.on("message", async message => {
         return;
       }
       if (connection && inVoice) {
-        const dispatcher = connection.play("./shame.mp3");
+        connection.play("./shame.mp3");
         message.channel.send(`**@${message.author.username} says:** *SHAME!*`);
       }
     } else if (command === "point" || command === "poi") {
@@ -100,6 +100,7 @@ client.on("message", async message => {
           args.length > 0 ? args.join(" ") + " speech" : "Next speech"
         } has started.`
       );
+      connection.play("./hear.mp3");
       timer(1, 0, message.channel, 1, "*1 minute!*").then(
         () => (protectedTime = false)
       );
