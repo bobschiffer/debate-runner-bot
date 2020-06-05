@@ -143,10 +143,18 @@ client.on("message", async message => {
     message.channel.send("Timer stopped.");
   }
 
-  if (command === "set" || command === "set-motion") {
+  if (command === "announce" || command === "set-motion") {
     /* Motion */
+    if (args.length < 1) {
+      message.channel.send(
+        "No motion entered. Type `-announce <motion>`. e.g. `-announce THW ban guns`"
+      );
+      return;
+    }
     const motion = args.join(" ");
-    console.log("Someone set the motion to", motion);
+    console.log(
+      "Someone set the motion to " + motion + " from " + message.channel.name
+    );
     const infoslide = motion.split("|")[1];
     motionBox = new Discord.MessageEmbed()
       .setColor("#0099ff")
