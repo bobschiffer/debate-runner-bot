@@ -179,4 +179,4 @@ const timer = (m, s, channel, numBells, message) => {
   return new Promise(resolve => setTimeout(resolve, time));
 };
 
-client.login("NzEzMzQwMjc4MDUxOTYyOTEw.XtDYNw.hlNu36Sd8fQW_b14tztFbSD3HXY");
+client.login(process.env.BOT_TOKEN);
