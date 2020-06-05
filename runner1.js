@@ -12,6 +12,9 @@ let motionBox;
 let isTiming = false;
 let protectedTime = false;
 
+//Timer IDs
+let timers = [];
+
 client.once("ready", () => {
   console.log("Ready!");
 });
@@ -90,7 +93,9 @@ client.on("message", async message => {
         return;
       }
       if (isTiming) {
-        message.channel.send("Wait for current timer to finish!");
+        message.channel.send(
+          "Wait for current timer to finish or type `-reset` to stop it."
+        );
         return;
       }
       isTiming = true;
@@ -131,7 +136,14 @@ client.on("message", async message => {
     timer(15, 0, message.channel, 0, "@everyone: Prep time's over!").then(
       () => (isTiming = false)
     );
-  } else if (command === "set-motion") {
+  }
+
+  if (command === "reset") {
+    timers.forEach(id => clearTimeout(id));
+    message.channel.send("Timer stopped.");
+  }
+
+  if (command === "set-motion") {
     /* Motion */
     const motion = args.join(" ");
     console.log("Someone set the motion to", motion);
@@ -145,7 +157,9 @@ client.on("message", async message => {
       )
       .setTimestamp();
     message.channel.send(motionBox);
-  } else if (command === "motion") {
+  }
+
+  if (command === "motion") {
     if (motionBox) {
       message.channel.send(motionBox);
     } else {
@@ -171,12 +185,13 @@ const toMilli = (min, sec) => {
 
 const timer = (m, s, channel, numBells, message) => {
   let time = toMilli(m, s);
-  setTimeout(() => {
+  let id = setTimeout(() => {
     channel.send(message);
     if (connection) {
       for (let i = 0; i < numBells; i++) connection.play("./bell.mp3");
     }
   }, time);
+  timers.push(id);
   return new Promise(resolve => setTimeout(resolve, time));
 };
 
