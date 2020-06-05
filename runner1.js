@@ -10,6 +10,7 @@ let voiceChannel;
 let inVoice = false;
 let motionBox;
 let isTiming = false;
+let protectedTime = false;
 
 client.once("ready", () => {
   console.log("Ready!");
@@ -37,6 +38,12 @@ client.on("message", async message => {
     message.member.voice.channel.name === voiceChannel
   ) {
     if (command === "hear") {
+      if (!voiceChannel) {
+        message.channel.send(
+          `This bot isn't in a voice channel! Type \`-${runner}\` to invite it in the voice channel you're in.`
+        );
+        return;
+      }
       if (connection && inVoice) {
         const dispatcher = connection.play("./hear.mp3");
         message.channel.send(
@@ -44,11 +51,27 @@ client.on("message", async message => {
         );
       }
     } else if (command === "shame") {
+      if (!voiceChannel) {
+        message.channel.send(
+          `This bot isn't in a voice channel! Type \`-${runner}\` to invite it in the voice channel you're in.`
+        );
+        return;
+      }
       if (connection && inVoice) {
         const dispatcher = connection.play("./shame.mp3");
         message.channel.send(`**@${message.author.username} says:** *SHAME!*`);
       }
     } else if (command === "point" || command === "poi") {
+      if (!voiceChannel) {
+        message.channel.send(
+          `This bot isn't in a voice channel! Type \`-${runner}\` to invite it in the voice channel you're in.`
+        );
+        return;
+      }
+      if (protectedTime) {
+        message.channel.send("Out of order.");
+        return;
+      }
       if (connection && inVoice) {
         const dispatcher = connection.play("./point.mp3");
         message.channel.send(
@@ -59,28 +82,49 @@ client.on("message", async message => {
           }!`
         );
       }
-    } else if (command === "speech" && !isTiming) {
+    } else if (command === "speech") {
+      if (!voiceChannel) {
+        message.channel.send(
+          `This bot isn't in a voice channel! Type \`-${runner}\` to invite it in the voice channel you're in.`
+        );
+        return;
+      }
+      if (isTiming) {
+        message.channel.send("Wait for current timer to finish!");
+        return;
+      }
       isTiming = true;
+      protectedTime = true;
       message.channel.send(
         `${
           args.length > 0 ? args.join(" ") + " speech" : "Next speech"
         } has started.`
       );
-      timer(1, 0, message.channel, 1, "*1 minute!*");
+      timer(1, 0, message.channel, 1, "*1 minute!*").then(
+        () => (protectedTime = false)
+      );
       for (let i = 2; i <= 5; i++)
         timer(i, 0, message.channel, 0, `*${i} minutes!*`);
-      timer(6, 0, message.channel, 1, "*6 minutes!*");
-      timer(7, 0, message.channel, 2, "*7 minutes! Time!*").then(
-        () => (isTiming = false)
+      timer(6, 0, message.channel, 1, "*6 minutes!*").then(
+        () => (protectedTime = true)
       );
-    } else if (command === "leave") {
+      timer(7, 0, message.channel, 2, "*7 minutes! Time!*").then(() => {
+        isTiming = false;
+        protectedTime = false;
+      });
+    } else if (command === "exit" && inVoice && connection) {
       /**LEAVE */
-      message.channel.send(Runner + " has disconnected.");
+      message.channel.send(runner + " has disconnected from " + voiceChannel);
       connection.disconnect();
       inVoice = false;
     }
-  } else if (command === "prep" && !isTiming) {
-    /**TIMER */
+  }
+
+  if (command === "prep") {
+    if (isTiming) {
+      message.channel.send("Wait for current timer to finish!");
+      return;
+    }
     isTiming = true;
     message.channel.send("Round starts in 15 minutes!");
     timer(15, 0, message.channel, 0, "@everyone: Prep time's over!").then(
@@ -106,11 +150,9 @@ client.on("message", async message => {
     } else {
       message.channel.send("Motion is empty!");
     }
-  } else if (!voiceChannel) {
-    message.channel.send(
-      `This bot isn't in a voice channel! Type \`-${runner}\` to invite it in the voice channel you're in.`
-    );
-  } else if (message.member.voice.channel.name !== voiceChannel) {
+  }
+
+  if (message.member.voice.channel.name !== voiceChannel) {
     console.log(
       `Someone entered a command that ${runner} has. It's possible that it was meant for another runner. This is just a console log.`
     );
@@ -137,4 +179,4 @@ const timer = (m, s, channel, numBells, message) => {
   return new Promise(resolve => setTimeout(resolve, time));
 };
 
-client.login(process.env.BOT_TOKEN);
+client.login("NzEzMzQwMjc4MDUxOTYyOTEw.XtDYNw.hlNu36Sd8fQW_b14tztFbSD3HXY");
