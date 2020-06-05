@@ -164,6 +164,7 @@ client.on("message", async message => {
         }\n\n**Infoslide:** ${infoslide ? infoslide : "None"}`
       )
       .setTimestamp();
+    message.channel.send("@everyone, motion!");
     message.channel.send(motionBox);
   }
 
