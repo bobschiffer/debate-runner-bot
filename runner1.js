@@ -143,7 +143,7 @@ client.on("message", async message => {
     message.channel.send("Timer stopped.");
   }
 
-  if (command === "set-motion") {
+  if (command === "set" || command === "set-motion") {
     /* Motion */
     const motion = args.join(" ");
     console.log("Someone set the motion to", motion);
