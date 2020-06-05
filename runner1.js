@@ -166,6 +166,14 @@ client.on("message", async message => {
       .setTimestamp();
     message.channel.send("@everyone, motion!");
     message.channel.send(motionBox);
+
+    if (!isTiming) {
+      isTiming = true;
+      message.channel.send("Round starts in 15 minutes!");
+      timer(15, 0, message.channel, 0, "@everyone: Prep time's over!").then(
+        () => (isTiming = false)
+      );
+    }
   }
 
   if (command === "motion") {
