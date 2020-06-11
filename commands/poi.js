@@ -22,7 +22,7 @@ module.exports = {
     }
 
     // Execute
-    state.connection.play("../audio/point.mp3");
+    state.connection.play("./audio/point.mp3");
     message.channel.send(
       `POI from @${
         args.length === 0

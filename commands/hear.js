@@ -22,8 +22,7 @@ module.exports = {
     }
 
     // Execute
-    console.log(state.connection);
-    state.connection.play("../audio/hear.mp3");
+    state.connection.play("./audio/hear.mp3");
     message.channel.send(`**@${message.author.username} says:** *HEAR, HEAR!*`);
   }
 };

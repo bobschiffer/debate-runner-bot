@@ -11,7 +11,7 @@ module.exports = {
       channel.send(message);
       if (state.connection) {
         for (let i = 0; i < numBells; i++)
-          state.connection.play("../audio/bell.mp3");
+          state.connection.play("./audio/bell.mp3");
       }
     }, time);
 

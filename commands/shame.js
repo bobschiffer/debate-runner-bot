@@ -22,7 +22,7 @@ module.exports = {
     }
 
     // Execute
-    state.connection.play("../audio/shame.mp3");
+    state.connection.play("./audio/shame.mp3");
     message.channel.send(`**@${message.author.username} says:** *SHAME!*`);
   }
 };
