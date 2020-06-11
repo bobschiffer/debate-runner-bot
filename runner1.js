@@ -1,13 +1,12 @@
-// Initial config
+const fs = require("fs");
 const Discord = require("discord.js");
 const prefix = "-";
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
-const runner = "runner1";
 
 // States
 const state = {
-  runner,
+  runner: "runner1",
   connection: undefined,
   voiceChannel: "",
   motionBox: undefined,
@@ -24,9 +23,6 @@ for (const file of commandFiles) {
   const command = require(`./commands/${file}`);
   client.commands.set(command.name, command);
 }
-
-//Timer IDs
-let timers = [];
 
 client.once("ready", () => {
   console.log("Ready!");
@@ -47,25 +43,5 @@ client.on("message", async message => {
   }
 });
 
-/** TO-DO: TIMER */
-// Converts minutes and seconds into milliseconds
-const toMilli = (min, sec) => {
-  let milli = 0;
-  milli += min * 60000;
-  milli += sec * 1000;
-  return milli;
-};
-
-const timer = (m, s, channel, numBells, message) => {
-  let time = toMilli(m, s);
-  let id = setTimeout(() => {
-    channel.send(message);
-    if (connection) {
-      for (let i = 0; i < numBells; i++) connection.play("./bell.mp3");
-    }
-  }, time);
-  timers.push(id);
-  return new Promise(resolve => setTimeout(resolve, time));
-};
-
-client.login(process.env.BOT_TOKEN);
+if (process.env.NODE_ENV === "production") client.login(process.env.BOT_TOKEN);
+else client.login(require("./config.js").token);

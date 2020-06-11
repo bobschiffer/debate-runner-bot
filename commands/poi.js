@@ -3,12 +3,12 @@ module.exports = {
   description: "Makes the poi sound",
   execute(state, message, args) {
     // Bot has to be in a voice channel
-    if (!connection) {
+    if (!state.connection) {
       return;
     }
 
     // Sender has to be in a voice channel
-    if (!member.voice.channel) {
+    if (!message.member.voice.channel) {
       message.channel.send(`Join a voice channel first!`);
       return;
     }
@@ -22,7 +22,7 @@ module.exports = {
     }
 
     // Execute
-    connection.play("./point.mp3");
+    state.connection.play("../audio/point.mp3");
     message.channel.send(
       `POI from @${
         args.length === 0

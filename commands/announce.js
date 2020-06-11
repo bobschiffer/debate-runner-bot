@@ -3,7 +3,7 @@ module.exports = {
   description:
     "Sets a motion then starts a 15-minute timer -- exclusive for runner1",
   execute(state, message, args) {
-    const Discord = require("../discord.js");
+    const Discord = require("discord.js");
     const timer = require("./timer.js");
 
     // There has to be a motion as an argument
@@ -28,6 +28,11 @@ module.exports = {
         }\n\n**Infoslide:** ${infoslide ? infoslide : "None"}`
       )
       .setTimestamp();
+
+    // Announce
+    message.channel.send("@everyone: Motion!");
+    message.channel.send(state.motionBox);
+    message.channel.send("Round starts in 15 minutes.");
 
     // 15-minute timer: bell rings twice after
     timer.time(15, 0, 2, state, message.channel, "@everyone: Time!!");
