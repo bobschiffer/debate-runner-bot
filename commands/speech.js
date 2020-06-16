@@ -33,13 +33,13 @@ module.exports = {
     timer
       .time(1, 0, 1, state, message.channel, "*1 minute!*")
       .then(() => (state.protectedTime = false));
-    for (let i = 2; i <= 5; i++)
+    for (let i = 2; i <= 6; i++)
       timer.time(i, 0, 0, state, message.channel, `*${i} minutes!*`);
     timer
-      .time(6, 0, 1, state, message.channel, "*6 minutes!*")
+      .time(7, 0, 1, state, message.channel, "*7 minutes!*")
       .then(() => (state.protectedTime = true));
     timer
-      .time(7, 0, 2, state, message.channel, "*7 minutes! Time!*")
+      .time(8, 0, 2, state, message.channel, "*8 minutes! Time!*")
       .then(() => {
         state.isTiming = false;
         state.protectedTime = false;
