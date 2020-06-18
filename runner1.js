@@ -12,7 +12,8 @@ const state = {
   motionBox: undefined,
   isTiming: false,
   protectedTime: false,
-  timers: []
+  timers: [],
+  format: "Australs"
 };
 
 const commandFiles = fs

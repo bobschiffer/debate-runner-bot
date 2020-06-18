@@ -5,6 +5,7 @@ module.exports = {
   execute(state, message, args) {
     const Discord = require("discord.js");
     const timer = require("./timer.js");
+    let mins = state.format === "Australs" ? 30 : 15;
 
     // There has to be a motion as an argument
     if (args.length < 1) {
@@ -32,9 +33,9 @@ module.exports = {
     // Announce
     message.channel.send("@everyone: Motion!");
     message.channel.send(state.motionBox);
-    message.channel.send("Round starts in 15 minutes.");
+    message.channel.send(`Round starts in ${mins} minutes.`);
 
-    // 15-minute timer: bell rings twice after
-    timer.time(15, 0, 2, state, message.channel, "@everyone: Time!!");
+    // Timer: bell rings twice after
+    timer.time(mins, 0, 2, state, message.channel, "@everyone: Time!!");
   }
 };

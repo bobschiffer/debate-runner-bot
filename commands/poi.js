@@ -21,6 +21,12 @@ module.exports = {
       return;
     }
 
+    // No POIs for Australs
+    if (state.format === "Australs") {
+      message.channel.send("POIs are not allowed for Australs!");
+      return;
+    }
+
     // Execute
     state.connection.play("./audio/point.mp3");
     message.channel.send(
