@@ -37,7 +37,7 @@ module.exports = {
       .time(1, 0, 1, state, message.channel, "*1 minute!*")
       .then(() => (state.protectedTime = false));
     for (let i = 2; i <= mins - 2; i++)
-      timer.time(i, 0, 0, state, message.channel, `*${mins} minutes!*`);
+      timer.time(i, 0, 0, state, message.channel, `*${i} minutes!*`);
     timer
       .time(mins - 1, 0, 1, state, message.channel, `*${mins - 1} minutes!*`)
       .then(() => (state.protectedTime = true));
