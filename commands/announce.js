@@ -36,6 +36,6 @@ module.exports = {
     message.channel.send(`Round starts in ${mins} minutes.`);
 
     // Timer: bell rings twice after
-    timer.time(mins, 0, 2, state, message.channel, "@everyone: Time!!");
+    //timer.time(mins, 0, 2, state, message.channel, "@everyone: Time!!");
   }
 };
