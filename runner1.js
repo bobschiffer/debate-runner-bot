@@ -13,7 +13,9 @@ const state = {
   isTiming: false,
   protectedTime: false,
   timers: [],
-  format: "Australs"
+  format: "Australs",
+  vetoAff: "",
+  vetoNeg: ""
 };
 
 const commandFiles = fs
