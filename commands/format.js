@@ -15,8 +15,7 @@ module.exports = {
     }
 
     // Change format
-    const format = args.join(" ");
-    state.format = format;
-    console.log(`Format set to ${format}`);
+    state.format = args.join(" ");
+    console.log(`Format set to ${state.format}`);
   }
 };

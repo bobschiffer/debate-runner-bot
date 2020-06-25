@@ -31,9 +31,9 @@ module.exports = {
       .setTimestamp();
 
     // Announce
-//    message.channel.send("@everyone: Motion!");
+    //    message.channel.send("@everyone: Motion!");
     message.channel.send(state.motionBox);
-  //  message.channel.send(`Round starts in ${mins} minutes.`);
+    //  message.channel.send(`Round starts in ${mins} minutes.`);
 
     // Timer: bell rings twice after
     //timer.time(mins, 0, 2, state, message.channel, "@everyone: Time!!");

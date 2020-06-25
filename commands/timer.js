@@ -1,5 +1,5 @@
 module.exports = {
-  name: "debate timer",
+  name: "timer",
   description: "times and makes the bell sound for a number of times",
   time(m, s, numBells, state, channel, message) {
     // Convert to milliseconds for setTimeout()
